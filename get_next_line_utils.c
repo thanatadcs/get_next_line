@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 11:09:51 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/05 17:23:41 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/05 19:42:26 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,54 @@ ssize_t	get_newline_index(char *s1, ssize_t s1_len)
 	return (-1);
 }
 
-/* TODO
+// Return length of input string
+// Note: str guarantee to be null terminated
+size_t	my_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 // Concatenate two strings and store in s1
 // Note: s1 guarantee to be null terminated, s2 is not (s2_len provided).
 void	concat(char **s1, char *s2, ssize_t s2_len)
 {
-	return ;
+	size_t	s1_len;
+	size_t	i;
+	size_t	j;
+	char	*new_s1;
+
+	if (s2_len <= 0)
+		return ;
+	s1_len = my_strlen(*s1);
+	new_s1 = malloc(((s1_len + (size_t)s2_len) * sizeof(char)) + 1);
+	if (new_s1 == 0)
+	{
+		*s1 = 0;
+		return ;
+	}
+	i = 0;
+	while (i < s1_len)
+	{
+		new_s1[i] = (*s1)[i];
+		i++;
+	}
+	j = 0;
+	while (j < (size_t)s2_len)
+		new_s1[i++] = s2[j++];
+	free(*s1);
+	*s1 = new_s1;
 }
 
 char	*get_newline(char *s1, newline_index)
 {
 }
 
+/*
 void	update_storage(char *storage, newline_index)
 {
 }

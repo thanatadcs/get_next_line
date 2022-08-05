@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 07:04:35 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/05 16:51:41 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/05 19:18:32 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@
 
 // get_next_line_utils.c
 ssize_t	get_newline_index(char *s1, ssize_t s1_len);
+size_t  my_strlen(char *str);
+void    concat(char **s1, char *s2, ssize_t s2_len);
 
 #endif

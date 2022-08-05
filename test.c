@@ -8,18 +8,35 @@
 void	test_get_newline_index(char *s1, ssize_t s1_len, ssize_t expected)
 {
 	ssize_t actual = get_newline_index(s1, s1_len);
-	printf("get_newline_index(\"");
-	for (int i=0; i<s1_len;i++)
+	printf("%s ", (expected == actual) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+}
+
+void	test_concat(char *s1, char *s2, ssize_t s2_len, char *expected)
+{
+	char	*s1_in;
+	size_t	s1_len = my_strlen(s1);
+	size_t	i;
+	s1_in = malloc((s1_len * sizeof(char)) + 1);
+	i = 0;
+	while (s1[i])
 	{
-		if (s1[i] == '\n') printf("\\n");
-		else printf("%c", s1[i]);
+		s1_in[i] = s1[i];
+		i++;
 	}
-	printf("\", %zd): %s\n", s1_len, (expected == actual) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	s1_in[i] = '\0';
+	concat(&s1_in, s2, s2_len);
+	i = 0;
+	while (s1[i] && expected[i] && s1[i] == expected[i])
+		i++;
+	printf("%s ", (s1_in[i] - expected[i] == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	free(s1_in);
+	return ;	
 }
 
 int	main(void)
 {
 	// TEST: ssize_t get_newline_index(char *s1, ssize_t s1_len)
+	printf("TEST get_newline_index: ");
 	test_get_newline_index("", 0, -1);
 	test_get_newline_index(0, -1, -1);
 	test_get_newline_index("abcde", 5, -1);
@@ -28,4 +45,17 @@ int	main(void)
 	test_get_newline_index("Helloworld\n", 11, 10);
 	test_get_newline_index("Hello\nworld\n", 12, 5);
 	test_get_newline_index("Hello\nworld\n", 5, -1);
+	printf("\n");
+
+	// TEST: void    concat(char **s1, char *s2, ssize_t s2_len)
+	printf("TEST concat: ");
+	test_concat("", "", 0, "");
+	test_concat("hello", "world", 5, "helloworld");
+	test_concat("hello", "world", 3, "hellowor");
+	test_concat("hello", "world", 0, "hello");
+	test_concat("", "world", 5, "world");
+	test_concat("", "world", 3, "wor");
+	test_concat("hello", "", 0, "hello");
+	test_concat("hello", "", -7, "hello");
+	printf("\n");
 }

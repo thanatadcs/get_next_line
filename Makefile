@@ -6,7 +6,7 @@
 #    By: tanukool <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/05 17:13:01 by tanukool          #+#    #+#              #
-#    Updated: 2022/08/05 18:03:52 by tanukool         ###   ########.fr        #
+#    Updated: 2022/08/05 19:09:00 by tanukool         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,17 @@ define norm_check
 	if [ -z $(norminette $(1) | grep 'Error!')]; then echo "NORM: ${GREEN}PASS${RESET}"; else echo "NORM: ${RED}FAIL${RESET}"; fi
 endef
 
+define leak_check
+	leaks --atExit -- $(addprefix ./, $(NAME)) 2> /dev/null | awk '/leaked/ {print "LEAK:", $$3}'
+endef
+
 NAME = test_gnl 
 
 u: norm
 	@$(CC) $(CFLAGS) test.c get_next_line_utils.c -o $(NAME)
-	@./test_gnl
-	@rm -f test_gnl
+	@$(call leak_check, $(NAME));
+	@$(addprefix ./, $(NAME))
+	@rm -rf $(NAME)
 
 m:
 
