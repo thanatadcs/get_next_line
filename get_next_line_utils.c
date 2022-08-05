@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 11:09:51 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/05 17:06:51 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:23:41 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ ssize_t	get_newline_index(char *s1, ssize_t s1_len)
 	ssize_t	i;
 
 	if (s1 == 0 || s1_len <= 0)
-		return ;
+		return (-1);
 	i = -1;
 	while (++i < s1_len)
 		if (s1[i] == '\n')

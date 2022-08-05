@@ -1,16 +1,20 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+#define GREEN "\033[0;32m"
+#define RED "\033[0;31m"
+#define RESET "\033[0m"
+
 void	test_get_newline_index(char *s1, ssize_t s1_len, ssize_t expected)
 {
 	ssize_t actual = get_newline_index(s1, s1_len);
-	printf("get_newline_index(");
+	printf("get_newline_index(\"");
 	for (int i=0; i<s1_len;i++)
 	{
 		if (s1[i] == '\n') printf("\\n");
 		else printf("%c", s1[i]);
 	}
-	printf(", %zd): %s\n", s1_len, (expected == actual) ? "PASS" : "FAIL");
+	printf("\", %zd): %s\n", s1_len, (expected == actual) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 }
 
 int	main(void)
