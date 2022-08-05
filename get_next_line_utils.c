@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 11:09:51 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/05 19:42:26 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/05 22:00:25 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,23 @@ void	concat(char **s1, char *s2, ssize_t s2_len)
 	*s1 = new_s1;
 }
 
-char	*get_newline(char *s1, newline_index)
+// Return new string up until a newline character in s1
+// Note: Break when newline_index overflow
+char	*get_newline(char *s1, ssize_t newline_index)
 {
+	char	*to_return;
+	ssize_t	i;
+
+	if (newline_index < 0)
+		return (0);
+	to_return = malloc((newline_index * sizeof(char)) + 1);
+	if (to_return == 0)
+		return (0);
+	i = -1;
+	while (++i <= newline_index)
+		to_return[i] = s1[i];
+	to_return[i] = '\0';
+	return (to_return);
 }
 
 /*

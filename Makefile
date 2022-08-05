@@ -6,7 +6,7 @@
 #    By: tanukool <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/05 17:13:01 by tanukool          #+#    #+#              #
-#    Updated: 2022/08/05 19:09:00 by tanukool         ###   ########.fr        #
+#    Updated: 2022/08/05 20:07:17 by tanukool         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ GREEN = \033[0;32m
 NORM_FILE = get_next_line_utils.c get_next_line.h
 
 define norm_check
-	if [ -z $(norminette $(1) | grep 'Error!')]; then echo "NORM: ${GREEN}PASS${RESET}"; else echo "NORM: ${RED}FAIL${RESET}"; fi
+	if [ -z $(shell norminette $(NORM_FILE) | grep 'Error!' | wc -l | awk '{print $$1}') ]; then echo "NORM: ${GREEN}PASS${RESET}"; else echo "NORM: ${RED}FAIL${RESET}"; fi
 endef
 
 define leak_check
@@ -31,8 +31,8 @@ NAME = test_gnl
 
 u: norm
 	@$(CC) $(CFLAGS) test.c get_next_line_utils.c -o $(NAME)
-	@$(call leak_check, $(NAME));
 	@$(addprefix ./, $(NAME))
+	@$(call leak_check, $(NAME));
 	@rm -rf $(NAME)
 
 m:
@@ -40,7 +40,7 @@ m:
 b:
 
 norm:
-	@$(call norm_check, $(NORM_FILE))
+	@norminette $(NORM_FILE)
 
 fclean:
 	@rm -f test_gnl

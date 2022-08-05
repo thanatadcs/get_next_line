@@ -5,6 +5,18 @@
 #define RED "\033[0;31m"
 #define RESET "\033[0m"
 
+int	my_strcmp(char *s1, char *s2)
+{
+	if (s1 == 0|| s2 == 0)
+		return (0);
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*s1 - *s2);
+}
+
 void	test_get_newline_index(char *s1, ssize_t s1_len, ssize_t expected)
 {
 	ssize_t actual = get_newline_index(s1, s1_len);
@@ -33,6 +45,13 @@ void	test_concat(char *s1, char *s2, ssize_t s2_len, char *expected)
 	return ;	
 }
 
+void	test_get_newline(char *s1, ssize_t newline_index, char *expected)
+{
+	char	*actual = get_newline(s1, newline_index);
+	printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	free(actual);
+}
+
 int	main(void)
 {
 	// TEST: ssize_t get_newline_index(char *s1, ssize_t s1_len)
@@ -57,5 +76,14 @@ int	main(void)
 	test_concat("", "world", 3, "wor");
 	test_concat("hello", "", 0, "hello");
 	test_concat("hello", "", -7, "hello");
+	printf("\n");
+
+	// TEST: char    *get_newline(char *s1, ssize_t newline_index)
+	printf("TEST get_newline: ");
+	test_get_newline("", -1, 0);
+	test_get_newline("\n", 0, "\n");
+	test_get_newline("\n\n", 0, "\n");
+	test_get_newline("hello\nworld", 5, "hello\n");
+	test_get_newline("hello\nworld\n", 5, "hello\n");
 	printf("\n");
 }
