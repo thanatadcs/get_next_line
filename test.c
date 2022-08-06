@@ -1,5 +1,6 @@
 #include "get_next_line.h"
 #include <stdio.h>
+#include <fcntl.h>
 
 #define GREEN "\033[0;32m"
 #define RED "\033[0;31m"
@@ -17,73 +18,79 @@ int	my_strcmp(char *s1, char *s2)
 	return (*s1 - *s2);
 }
 
-void	test_get_newline_index(char *s1, ssize_t s1_len, ssize_t expected)
+void	test_storage(char *storage, char *expected, char *(*f)(char *))
 {
-	ssize_t actual = get_newline_index(s1, s1_len);
-	printf("%s ", (expected == actual) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	char	*actual = f(storage);
+	printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	free(actual);
 }
 
-void	test_concat(char *s1, char *s2, ssize_t s2_len, char *expected)
+void	test_my_strjoin(char *storage, char *buf, char *expected)
 {
-	char	*s1_in;
-	size_t	s1_len = my_strlen(s1);
-	size_t	i;
-	s1_in = malloc((s1_len * sizeof(char)) + 1);
-	i = 0;
-	while (s1[i])
-	{
-		s1_in[i] = s1[i];
-		i++;
-	}
-	s1_in[i] = '\0';
-	concat(&s1_in, s2, s2_len);
-	i = 0;
-	while (s1[i] && expected[i] && s1[i] == expected[i])
-		i++;
-	printf("%s ", (s1_in[i] - expected[i] == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
-	free(s1_in);
-	return ;	
-}
+	size_t	buf_len;
 
-void	test_get_newline(char *s1, ssize_t newline_index, char *expected)
-{
-	char	*actual = get_newline(s1, newline_index);
+	buf_len = 0;
+	while (buf[buf_len])
+		buf_len++;
+	char	*actual = my_strjoin(storage, buf, buf_len);
 	printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 	free(actual);
 }
 
 int	main(void)
 {
-	// TEST: ssize_t get_newline_index(char *s1, ssize_t s1_len)
-	printf("TEST get_newline_index: ");
-	test_get_newline_index("", 0, -1);
-	test_get_newline_index(0, -1, -1);
-	test_get_newline_index("abcde", 5, -1);
-	test_get_newline_index("Helloworld", 10, -1);
-	test_get_newline_index("Hello\nworld", 11, 5);
-	test_get_newline_index("Helloworld\n", 11, 10);
-	test_get_newline_index("Hello\nworld\n", 12, 5);
-	test_get_newline_index("Hello\nworld\n", 5, -1);
+/*
+	// TEST: char *get_return_line(char *storage);
+	printf("get_return_line: ");
+	test_storage("", "", get_return_line);
+	test_storage("\n", "\n", get_return_line);
+	test_storage("\n\n\n", "\n", get_return_line);
+	test_storage("hello\nworld\nnaja\n", "hello\n", get_return_line);
+	test_storage("hello", "hello", get_return_line);
 	printf("\n");
 
-	// TEST: void    concat(char **s1, char *s2, ssize_t s2_len)
-	printf("TEST concat: ");
-	test_concat("", "", 0, "");
-	test_concat("hello", "world", 5, "helloworld");
-	test_concat("hello", "world", 3, "hellowor");
-	test_concat("hello", "world", 0, "hello");
-	test_concat("", "world", 5, "world");
-	test_concat("", "world", 3, "wor");
-	test_concat("hello", "", 0, "hello");
-	test_concat("hello", "", -7, "hello");
+	// TEST: char *update_storage(char *storage)
+	printf("update_storage: ");
+	test_storage("", "", update_storage);
+	test_storage("\n", "", update_storage);
+	test_storage("\n\n\n", "\n\n", update_storage);
+	test_storage("hello\nworld\nnaja\n", "world\nnaja\n", update_storage);
+	test_storage("hello", "hello", update_storage);
 	printf("\n");
 
-	// TEST: char    *get_newline(char *s1, ssize_t newline_index)
-	printf("TEST get_newline: ");
-	test_get_newline("", -1, 0);
-	test_get_newline("\n", 0, "\n");
-	test_get_newline("\n\n", 0, "\n");
-	test_get_newline("hello\nworld", 5, "hello\n");
-	test_get_newline("hello\nworld\n", 5, "hello\n");
+	// TEST: char *my_strjoin(char *storage, char *buf, ssize_t buf_len)
+	printf("my_strjoin: ");
+	test_my_strjoin("", "", "");
+	test_my_strjoin("hi", "", "hi");
+	test_my_strjoin("", "hi", "hi");
+	test_my_strjoin(0, "hi", "hi");
+	test_my_strjoin(0, "", "");
+	test_my_strjoin("hello\n", "world\n", "hello\nworld\n");
 	printf("\n");
+
+	// TEST: char *read_line(char *storage, int fd)
+	printf("--------------------- read_line: reading from ./texts/sample.txt --------------------- \n");
+	int	fd = open("./texts/sample.txt", O_RDONLY);
+	char *out; 
+	while ((out = read_line(0, fd)))
+	{
+		printf("%s", out);
+		free(out);
+	}
+	close(fd);
+	printf("--------------------- read_line: end closed file --------------------- \n");
+
+*/
+	// TEST: char *get_next_line(int fd)
+	printf("--------------------- read_line: reading from ./texts/sample.txt --------------------- \n");
+	int fd = open("./texts/sample2.txt", O_RDONLY);
+	char *line; 
+	for (int i=0;i<35;i++)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	printf("--------------------- read_line: end closed file --------------------- \n");
 }
