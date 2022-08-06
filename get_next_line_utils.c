@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:58:06 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/06 20:03:12 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:06:26 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*update_storage(char *storage)
 	newline_len = 0;
 	while (storage[newline_len] && storage[newline_len] != '\n')
 		newline_len++;
-	if (storage[newline_len] == '\n');
+	if (storage[newline_len] == '\n')
 		newline_len++;
 	to_return = malloc((storage_len - newline_len + 1) * sizeof(char));
 	if (to_return == 0)
