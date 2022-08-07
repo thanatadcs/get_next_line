@@ -6,12 +6,12 @@
 #    By: tanukool <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/05 17:13:01 by tanukool          #+#    #+#              #
-#    Updated: 2022/08/06 14:49:40 by tanukool         ###   ########.fr        #
+#    Updated: 2022/08/07 12:59:17 by tanukool         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I.
+CFLAGS = -Wall -Werror -Wextra -I. -L. -lft
 
 RESET = \033[0m
 RED = \033[0;31m
@@ -29,14 +29,11 @@ endef
 
 NAME = test_gnl 
 
-u:
+test:
 	@$(CC) $(CFLAGS) test.c get_next_line_utils.c get_next_line.c -o $(NAME)
 	@$(addprefix ./, $(NAME))
 	@$(call leak_check, $(NAME))
 	@rm -rf $(NAME)
-m: 
-
-b:
 
 norm:
 	@norminette $(NORM_FILE)

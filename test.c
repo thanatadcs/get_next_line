@@ -1,4 +1,5 @@
 #include "get_next_line.h"
+#include "libft.h"
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -6,10 +7,8 @@
 #define RED "\033[0;31m"
 #define RESET "\033[0m"
 
-int	my_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-	if (s1 == 0|| s2 == 0)
-		return (0);
 	while (*s1 && *s2 && *s1 == *s2)
 	{
 		s1++;
@@ -18,79 +17,68 @@ int	my_strcmp(char *s1, char *s2)
 	return (*s1 - *s2);
 }
 
-void	test_storage(char *storage, char *expected, char *(*f)(char *))
+void	test_get_newline(char *storage, char *expected)
 {
-	char	*actual = f(storage);
-	printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	char	*actual = get_newline(&storage, get_char_index(storage, '\n'));
+	printf("%s ", (ft_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 	free(actual);
 }
 
-void	test_my_strjoin(char *storage, char *buf, char *expected)
+void	test_update_storage(char *storage, char *expected)
 {
-	size_t	buf_len;
-
-	buf_len = 0;
-	while (buf[buf_len])
-		buf_len++;
-	char	*actual = my_strjoin(storage, buf, buf_len);
-	printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
+	char *actual = ft_strdup(storage);
+	update_storage(&actual, get_char_index(storage, '\n'));
+	printf("%s ", (ft_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 	free(actual);
 }
+
+// printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 
 int	main(void)
 {
 /*
-	// TEST: char *get_return_line(char *storage);
-	printf("get_return_line: ");
-	test_storage("", "", get_return_line);
-	test_storage("\n", "\n", get_return_line);
-	test_storage("\n\n\n", "\n", get_return_line);
-	test_storage("hello\nworld\nnaja\n", "hello\n", get_return_line);
-	test_storage("hello", "hello", get_return_line);
+	printf("get_newline: ");
+	test_get_newline("\n", "\n");
+	test_get_newline("\n\n", "\n");
+	test_get_newline("hello\n", "hello\n");
+	test_get_newline("hello\nworld", "hello\n");
+	test_get_newline("hello\nworld\n", "hello\n");
 	printf("\n");
 
-	// TEST: char *update_storage(char *storage)
 	printf("update_storage: ");
-	test_storage("", "", update_storage);
-	test_storage("\n", "", update_storage);
-	test_storage("\n\n\n", "\n\n", update_storage);
-	test_storage("hello\nworld\nnaja\n", "world\nnaja\n", update_storage);
-	test_storage("hello", "hello", update_storage);
-	printf("\n");
-
-	// TEST: char *my_strjoin(char *storage, char *buf, ssize_t buf_len)
-	printf("my_strjoin: ");
-	test_my_strjoin("", "", "");
-	test_my_strjoin("hi", "", "hi");
-	test_my_strjoin("", "hi", "hi");
-	test_my_strjoin(0, "hi", "hi");
-	test_my_strjoin(0, "", "");
-	test_my_strjoin("hello\n", "world\n", "hello\nworld\n");
+	test_update_storage("\n", "");
+	test_update_storage("\n\n", "\n");
+	test_update_storage("\n\n\n", "\n\n");
+	test_update_storage("hello\n", "");
+	test_update_storage("hello\nworld", "world");
+	test_update_storage("hello\nworld\n", "world\n");
 	printf("\n");
 
 	// TEST: char *read_line(char *storage, int fd)
 	printf("--------------------- read_line: reading from ./texts/sample.txt --------------------- \n");
 	int	fd = open("./texts/sample.txt", O_RDONLY);
-	char *out; 
-	while ((out = read_line(0, fd)))
+	char *storage = ft_strdup("");
+	char *buf;
+	for (int i = 0; i < 1; i++)
 	{
-		printf("%s", out);
-		free(out);
+		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		read_line(&storage, buf, fd);
+		printf("%s", storage);
 	}
+	free(storage);
 	close(fd);
-	printf("--------------------- read_line: end closed file --------------------- \n");
-
-*/
+	printf("\n--------------------- read_line: end closed file --------------------- \n");
 	// TEST: char *get_next_line(int fd)
-	printf("--------------------- read_line: reading from ./texts/sample.txt --------------------- \n");
-	int fd = open("./texts/sample2.txt", O_RDONLY);
-	char *line; 
-	for (int i=0;i<35;i++)
+	printf("--------------------- get_next_line: reading from ./texts/sample.txt --------------------- \n");
+	*/
+	int fd = open("./texts/sample.txt", O_RDONLY);
+	char *line;
+	for (int i=0; i<100;i++)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
 		free(line);
 	}
 	close(fd);
-	printf("--------------------- read_line: end closed file --------------------- \n");
+	printf("\n--------------------- get_next_line: end closed file --------------------- \n");
 }
