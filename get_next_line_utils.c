@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 01:14:28 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/07 05:18:58 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/08 01:06:33 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,34 +36,6 @@ ssize_t	get_char_index(char *s, char c)
 	if (s[i] != c)
 		return (-1);
 	return (i);
-}
-
-int	is_mul_overflow(size_t a, size_t b)
-{
-	size_t	prod;
-
-	if (a == 0 || b == 0)
-		return (0);
-	prod = a * b;
-	if (a == prod / b)
-		return (0);
-	return (1);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*to_return;
-	size_t	return_len;
-
-	if (is_mul_overflow(count, size))
-		return (0);
-	return_len = count * size;
-	to_return = malloc(return_len * sizeof(char));
-	if (to_return == 0)
-		return (0);
-	while (return_len > 0)
-		((char *) to_return)[--return_len] = 0;
-	return (to_return);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)

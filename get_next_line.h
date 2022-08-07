@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:50:58 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/07 23:33:51 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/08 01:24:02 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 ssize_t	get_char_index(char *s, char c);
 char	*get_newline_update_storage(char **storage_ptr, ssize_t newline_index);
 void	update_storage(char **storage_ptr, ssize_t newline_index);
-void	read_line(char **storage_ptr, char *buf, int fd);
+void	read_line(char **storage_ptr, int fd);
 char	*get_next_line(int fd);
 
 #endif

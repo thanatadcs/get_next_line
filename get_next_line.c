@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:19:01 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/08 00:55:30 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/08 01:24:46 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,15 @@ void	update_storage(char **storage_ptr, ssize_t newline_index)
 	free(storage);
 }
 
-void	read_line(char **storage_ptr, char *buf, int fd)
+void	read_line(char **storage_ptr, int fd)
 {
 	ssize_t		read_num;
 	char		*old_storage;
+	char		*buf;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-	{
-		free(buf);
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (buf == 0)
 		return ;
-	}
 	read_num = read(fd, buf, BUFFER_SIZE);
 	while (read_num != 0)
 	{
@@ -99,25 +98,16 @@ void	read_line(char **storage_ptr, char *buf, int fd)
 char	*get_next_line(int fd)
 {
 	static char	*storage;
-	char		*buf;
 	char		*to_return;
 	ssize_t		newline_index;
 
-	to_return = 0;
-	// Error: storage = 0
-	// \n: storage = \n
-	// eof: storage = some non-empty line, storage = 0
-	// eof2: storage = 0, return 0
-	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (buf == 0)
+	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (0);
-	read_line(&storage, buf, fd); // If failed free storage
+	to_return = 0;
+	read_line(&storage, fd); // If failed free storage
 	newline_index = get_char_index(storage, '\n'); // Might be slow here
 	if (newline_index >= 0) // newline
-	{
 		to_return = get_newline_update_storage(&storage, newline_index); // Create a new copy, if fail we free storage, set storage as 0
-		// update_storage(&storage, newline_index); // Free old, assign new, if failed we free storage, set storage as 0
-	}
 	else if (storage != 0) // eof (some string but no newline)
 	{
 		if (*storage == '\0')
