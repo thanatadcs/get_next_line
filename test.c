@@ -19,7 +19,7 @@ int	ft_strcmp(char *s1, char *s2)
 
 void	test_get_newline(char *storage, char *expected)
 {
-	char	*actual = get_newline(&storage, get_char_index(storage, '\n'));
+	char	*actual = get_newline_update_storage(&storage, get_char_index(storage, '\n'));
 	printf("%s ", (ft_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 	free(actual);
 }
@@ -71,9 +71,9 @@ int	main(void)
 	// TEST: char *get_next_line(int fd)
 	printf("--------------------- get_next_line: reading from ./texts/sample.txt --------------------- \n");
 	*/
-	int fd = open("./texts/sample.txt", O_RDONLY);
+	int fd = open("./texts/43_with_nl", O_RDONLY);
 	char *line;
-	for (int i=0; i<100;i++)
+	for (int i=0; i<2;i++)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);

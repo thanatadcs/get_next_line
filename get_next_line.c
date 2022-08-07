@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:19:01 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/07 13:11:37 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/08 00:55:30 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Guarantee that storage_ptr and *storage_ptr are not null and contains \n.
 // newline_index guaranteet to be positive.
 // If failed, free storage.
-char	*get_newline(char **storage_ptr, ssize_t newline_index)
+char	*get_newline_update_storage(char **storage_ptr, ssize_t newline_index)
 {
 	char	*to_return;
 	char	*storage;
@@ -33,6 +33,7 @@ char	*get_newline(char **storage_ptr, ssize_t newline_index)
 	while (++i <= newline_index)
 		to_return[i] = storage[i];
 	to_return[i] = '\0';
+	update_storage(storage_ptr, newline_index);
 	return (to_return);	
 }
 
@@ -84,10 +85,11 @@ void	read_line(char **storage_ptr, char *buf, int fd)
 			*storage_ptr = 0;
 			break ;
 		}
+		buf[read_num] = '\0';
 		old_storage = *storage_ptr;
 		*storage_ptr = ft_strjoin(*storage_ptr, buf); // Return new, does't free
 		free(old_storage);
-		if (get_char_index(buf, '\n') >= 0)
+		if (get_char_index(buf, '\n') >= 0) // or here
 			break ;
 		read_num = read(fd, buf, BUFFER_SIZE);
 	}
@@ -106,15 +108,15 @@ char	*get_next_line(int fd)
 	// \n: storage = \n
 	// eof: storage = some non-empty line, storage = 0
 	// eof2: storage = 0, return 0
-	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (buf == 0)
 		return (0);
 	read_line(&storage, buf, fd); // If failed free storage
-	newline_index = get_char_index(storage, '\n');
+	newline_index = get_char_index(storage, '\n'); // Might be slow here
 	if (newline_index >= 0) // newline
 	{
-		to_return = get_newline(&storage, newline_index); // Create a new copy, if fail we free storage, set storage as 0
-		update_storage(&storage, newline_index); // Free old, assign new, if failed we free storage, set storage as 0
+		to_return = get_newline_update_storage(&storage, newline_index); // Create a new copy, if fail we free storage, set storage as 0
+		// update_storage(&storage, newline_index); // Free old, assign new, if failed we free storage, set storage as 0
 	}
 	else if (storage != 0) // eof (some string but no newline)
 	{
