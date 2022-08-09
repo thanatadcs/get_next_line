@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:19:01 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/09 12:36:37 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/09 17:42:15 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	read_line(char **storage_ptr, int fd)
 		old_storage = *storage_ptr;
 		*storage_ptr = ft_strjoin(*storage_ptr, buf);
 		free(old_storage);
-		if (get_char_index(*storage_ptr, '\n') >= 0)
+		if (get_char_index(buf, '\n') >= 0)
 			break ;
 		read_num = read(fd, buf, BUFFER_SIZE);
 	}
