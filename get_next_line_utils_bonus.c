@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 01:14:28 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/09 12:29:09 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/09 13:13:03 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ void	lst_del_fd(t_list **head_ptr, int fd)
 		prev_node = 0;
 		while (cur_node->next && cur_node->fd != fd)
 		{
-			cur_node = cur_node->next;
 			prev_node = cur_node;
+			cur_node = cur_node->next;
 		}
 		if (cur_node->fd == fd)
 		{

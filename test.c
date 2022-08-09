@@ -75,10 +75,10 @@ int	main(void)
 	int fd1 = open("./texts/43_with_nl", O_RDONLY);
 	int fd2 = open("./texts/43_with_nl2", O_RDONLY);
 	char *line1, *line2;
-	for (int i=0; i<2;i++)
+	for (int i=0; i<5;i++)
 	{
 		line1 = get_next_line(fd1);
-		line2 = get_next_line(fd2);
+		line2 = get_next_line(1003);
 		printf("%s", line1);
 		printf("%s", line2);
 		free(line1);
