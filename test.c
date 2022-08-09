@@ -72,14 +72,19 @@ int	main(void)
 	// TEST: char *get_next_line(int fd)
 	printf("--------------------- get_next_line: reading from ./texts/sample.txt --------------------- \n");
 	*/
-	int fd = open("./texts/43_with_nl", O_RDONLY);
-	char *line;
+	int fd1 = open("./texts/43_with_nl", O_RDONLY);
+	int fd2 = open("./texts/43_with_nl2", O_RDONLY);
+	char *line1, *line2;
 	for (int i=0; i<2;i++)
 	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		free(line);
+		line1 = get_next_line(fd1);
+		line2 = get_next_line(fd2);
+		printf("%s", line1);
+		printf("%s", line2);
+		free(line1);
+		free(line2);
 	}
-	close(fd);
+	close(fd1);
+	close(fd2);
 	printf("\n--------------------- get_next_line: end closed file --------------------- \n");
 }
