@@ -78,7 +78,7 @@ int	main(void)
 	for (int i=0; i<5;i++)
 	{
 		line1 = get_next_line(fd1);
-		line2 = get_next_line(1003);
+		line2 = get_next_line(0);
 		printf("%s", line1);
 		printf("%s", line2);
 		free(line1);

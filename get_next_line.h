@@ -6,11 +6,12 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:50:58 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/09 03:38:38 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/09 13:58:57 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <stdlib.h>
 # include <unistd.h>
