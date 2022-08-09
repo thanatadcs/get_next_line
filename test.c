@@ -16,7 +16,7 @@ int	ft_strcmp(char *s1, char *s2)
 	}
 	return (*s1 - *s2);
 }
-
+/*
 void	test_get_newline(char *storage, char *expected)
 {
 	char	*actual = get_newline_update_storage(&storage, get_char_index(storage, '\n'));
@@ -31,6 +31,7 @@ void	test_update_storage(char *storage, char *expected)
 	printf("%s ", (ft_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 	free(actual);
 }
+*/
 
 // printf("%s ", (my_strcmp(actual, expected) == 0) ? GREEN"PASS"RESET : RED"FAIL"RESET);
 

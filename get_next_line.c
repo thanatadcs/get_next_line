@@ -6,7 +6,7 @@
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 21:19:01 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/09 00:33:36 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/09 03:40:27 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,7 @@
 // Guarantee that storage_ptr and *storage_ptr are not null and contains \n.
 // newline_index guaranteet to be positive.
 // If failed, free storage.
-char	*get_newline_update_storage(char **storage_ptr, ssize_t newline_index)
-{
-	char	*to_return;
-	char	*storage;
-	ssize_t	i;
-
-	storage = *storage_ptr;
-	to_return = malloc((newline_index + 1 + 1) * sizeof (char));
-	if (to_return == 0)
-	{
-		free(storage);
-		*storage_ptr = 0;
-		return (0);
-	}
-	i = -1;
-	while (++i <= newline_index)
-		to_return[i] = storage[i];
-	to_return[i] = '\0';
-	update_storage(storage_ptr, newline_index);
-	return (to_return);
-}
-
-// Guarantee that storage_ptr and *storage_ptr are not null and contains \n.
-// newline_index guaranteet to be positive.
-// If failed, free storage.
-void	update_storage(char **storage_ptr, ssize_t newline_index)
+static void	update_storage(char **storage_ptr, ssize_t newline_index)
 {
 	char	*new_storage;
 	char	*storage;
@@ -67,7 +42,33 @@ void	update_storage(char **storage_ptr, ssize_t newline_index)
 	free(storage);
 }
 
-void	read_line(char **storage_ptr, int fd)
+// Guarantee that storage_ptr and *storage_ptr are not null and contains \n.
+// newline_index guaranteet to be positive.
+// If failed, free storage.
+static char	*get_newline_update_storage(char **storage_ptr, \
+ssize_t newline_index)
+{
+	char	*to_return;
+	char	*storage;
+	ssize_t	i;
+
+	storage = *storage_ptr;
+	to_return = malloc((newline_index + 1 + 1) * sizeof (char));
+	if (to_return == 0)
+	{
+		free(storage);
+		*storage_ptr = 0;
+		return (0);
+	}
+	i = -1;
+	while (++i <= newline_index)
+		to_return[i] = storage[i];
+	to_return[i] = '\0';
+	update_storage(storage_ptr, newline_index);
+	return (to_return);
+}
+
+static void	read_line(char **storage_ptr, int fd)
 {
 	ssize_t		read_num;
 	char		*old_storage;

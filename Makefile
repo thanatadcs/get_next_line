@@ -6,7 +6,7 @@
 #    By: tanukool <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/05 17:13:01 by tanukool          #+#    #+#              #
-#    Updated: 2022/08/07 23:59:13 by tanukool         ###   ########.fr        #
+#    Updated: 2022/08/09 11:32:21 by tanukool         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,14 +31,21 @@ NAME = test_gnl
 
 BUF ?= $(shell bash -c 'read -p "BUFFER_SIZE = " buf; echo $$buf')
 
-buf:
+
+b:
+	@$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUF) test.c get_next_line_utils_bonus.c get_next_line_bonus.c -o $(NAME)
+	@$(addprefix ./, $(NAME))
+	@$(call leak_check, $(NAME))
+	@rm -rf $(NAME)
+
+m:
 	@$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUF) test.c get_next_line_utils.c get_next_line.c -o $(NAME)
 	@$(addprefix ./, $(NAME))
 	@$(call leak_check, $(NAME))
 	@rm -rf $(NAME)
 
 test:
-	@$(CC) $(CFLAGS) -D BUFFER_SIZE=20 test.c get_next_line_utils.c get_next_line.c -o $(NAME)
+	@$(CC) $(CFLAGS) -D test.c get_next_line_utils.c get_next_line.c -o $(NAME)
 	@$(addprefix ./, $(NAME))
 	@$(call leak_check, $(NAME))
 	@rm -rf $(NAME)

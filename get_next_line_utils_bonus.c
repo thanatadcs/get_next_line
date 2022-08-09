@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanukool <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 01:14:28 by tanukool          #+#    #+#             */
-/*   Updated: 2022/08/08 01:06:33 by tanukool         ###   ########.fr       */
+/*   Updated: 2022/08/09 11:54:48 by tanukool         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -61,4 +61,56 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		to_return[i++] = *s2++;
 	to_return[i] = '\0';
 	return (to_return);
+}
+
+t_list	*lst_get_fd(t_list **head_ptr, int fd)
+{
+	t_list	*cur_node;
+	t_list	*new_node;
+
+	if (*head_ptr != 0)
+	{
+		cur_node = *head_ptr;
+		while (cur_node->next && cur_node->fd != fd)
+			cur_node = cur_node->next;
+		if (cur_node->fd == fd)
+			return (cur_node);
+	}
+	new_node = malloc(sizeof(t_list));
+	if (new_node == 0)
+		return (0);
+	new_node->storage = 0;
+	new_node->fd = fd;
+	new_node->next = 0;
+	if (*head_ptr == 0)
+		*head_ptr = new_node;
+	else
+		cur_node->next = new_node;
+	return (new_node);
+}
+
+// Don't have to free the storage since we will eventually return it.
+void	lst_del_fd(t_list **head_ptr, int fd)
+{
+	t_list	*cur_node;
+	t_list	*prev_node;
+
+	if (*head_ptr != 0)
+	{
+		cur_node = *head_ptr;
+		prev_node = 0;
+		while (cur_node->next && cur_node->fd != fd)
+		{
+			cur_node = cur_node->next;
+			prev_node = cur_node;
+		}
+		if (cur_node->fd == fd)
+		{
+			if (prev_node == 0)
+				*head_ptr = 0;
+			else
+				prev_node->next = cur_node->next;
+			free(cur_node);
+		}
+	}
 }
